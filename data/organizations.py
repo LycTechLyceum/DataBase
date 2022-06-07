@@ -10,7 +10,7 @@ class Organization(SqlAlchemyBase, SerializerMixin):
 
     id = sqlalchemy.Column(sqlalchemy.Integer,
                            primary_key=True, autoincrement=True)
-    name = sqlalchemy.Column(sqlalchemy.String, nullable=False)
-    audience = sqlalchemy.Column(sqlalchemy.Integer)
+    name = sqlalchemy.Column(sqlalchemy.String, nullable=False, unique=True)
+    audience = sqlalchemy.Column(sqlalchemy.Integer, default=0)
 
     events = orm.relation("Event", back_populates="organization")
