@@ -5,9 +5,10 @@ from data.events import Event
 from data.organizations import Organization
 from data.personas import Persona
 from data.positions import Position
+from data.practices import Practice
+from data.visitors_practices import VisitorPractice
 
 from users.sqlalchemy_repo import SQLAlchemyRepo
-
 
 
 def main():
@@ -28,7 +29,6 @@ def main():
     db_sess.commit()
 
     print("добавлены пару должностей: ", pos.name, pos2.name, pos3.name)
-
 
     per = Persona()
     per.name = "тима"
@@ -77,6 +77,33 @@ def main():
     db_sess.add(event)
     db_sess.commit()
 
+    # добавляем практику и смотрим что получится
+    prac = Practice()
+    prac.name = "имя хорошее"
+
+    db_sess.add(prac)
+    db_sess.commit()
+
+    vis_prac = VisitorPractice()
+    vis_prac.id_visitor = 1
+    vis_prac.id_practice = 1
+
+    vis_prac2 = VisitorPractice()
+    vis_prac2.id_visitor = 2
+    vis_prac2.id_practice = 1
+
+    vis_prac3 = VisitorPractice()
+    vis_prac3.id_visitor = 3
+    vis_prac3.id_practice = 1
+
+    db_sess.add(vis_prac)
+    db_sess.add(vis_prac2)
+    db_sess.add(vis_prac3)
+    db_sess.commit()
+
+    for i in prac.visitors:
+        print(i.personality.name, "!!!!!")
+
     print("добавлено событие {}".format(event.name), "его куратор: {}".format(event.curator.name),
           "а организация, от которой поступил заказ: {}".format(event.organization.name))
 
@@ -88,7 +115,7 @@ def main():
     print(repo.set_curator(per, event))  # добавляем куратора на проект
     print(repo.set_customer(per1, event))  # добавляем повторяющегося заказчика
     print(repo.add_organization(  # добавляем организацию
-        org_name="шргп"
+        org_name=986
     ))
     print(repo.add_organization(  # добавляем организацию с неправльным именем
         org_name=0
@@ -96,9 +123,8 @@ def main():
     print(repo.add_event(  # добавляем событие
         event_name="name event",
         org=org,
-        per_cur=per1,
-        per_cus=per
-    ))
+        per_cur=per1
+    ), "!!!")
     print(repo.add_user(  # добавляем пользователя
         name="нууу",
         surname="pkojhi",
@@ -116,6 +142,18 @@ def main():
     print(repo.set_visitor(
         user=per1,
         event=event
+    ))
+
+    print(repo.add_practice(
+        practice_name="Practice  01"
+    ), "1")
+
+    for event in org.events:
+        print(event.name)
+
+    print(repo.set_visitor_practice(
+        visitor=per,
+        practice=prac
     ))
 
 

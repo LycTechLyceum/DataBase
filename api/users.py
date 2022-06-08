@@ -11,4 +11,8 @@ parser.add_argument("id_", required=False)
 
 class User(Resource):
     def post(self):
+        pass
 
+# api/add_user (-> параметры пользователя)
+
+ # https://lyctech/api/all_users

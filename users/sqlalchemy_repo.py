@@ -10,13 +10,16 @@ from data.leaders import Leader
 from data.organizations import Organization
 from data.personas import Persona
 from data.positions import Position
+from data.practices import Practice
 from data.progers import Proger
 from data.visitors import Visitor
-
 
 # класс, взаимодейсвующей с базой данных, все добавления / изменения / удаления
 # должны производиться ТОЛЬКО в нём, тк главная наша задача - не уронить к чёрту сервер
 # а все возможные ошибки ( или почти все >:) ) в работе с алхимией ловятся тут
+from data.visitors_practices import VisitorPractice
+
+
 class SQLAlchemyRepo:
     def __init__(self, name):
         db_session.global_init(name)
@@ -63,7 +66,7 @@ class SQLAlchemyRepo:
     def add_event(self, event_name=None, org=None, per_cur=None, per_cus=None):
         try:
             event = Event()
-            if type(event_name) != str or type(org) != Organization or\
+            if type(event_name) != str or type(org) != Organization or \
                     type(per_cur) != Persona or type(per_cus) != Persona:
                 raise TypeError
             else:
@@ -85,6 +88,82 @@ class SQLAlchemyRepo:
         except TypeError:
             return "wrong type one of the parameters (name(str)," \
                    " org(Organisation), per_cur(Persona), per_cus(Persona))"
+
+    # добавть организацию если она уникальна
+    def add_organization(self, org_name=None):
+        try:
+            if type(org_name) == str:
+                org_existed = self.db_sess.query(Organization).filter(Organization.name == org_name).first()
+                if org_existed is None:
+                    org = Organization()
+                    org.name = org_name
+                    self.db_sess.add(org)
+                    self.db_sess.commit()
+                    return "success"
+                else:
+                    return "duplicated organization"
+            else:
+                raise TypeError
+
+        # что-то пошло не так при добавлении sqlalchemy-ей в бд
+        except sqlalchemy.exc.IntegrityError as error:
+            return "integrity error: {}".format(error)
+        # у кого-то параметра не задан атрибут
+        except sqlalchemy.exc.PendingRollbackError as error:
+            return "some parameter doesn't have needed attribute: {}".format(error)
+        # неправильные типы переданных переменных
+        except TypeError:
+            return "wrong type one of the parameters(org_name(str))"
+
+        # добавить уникальную должность
+
+    def add_position(self, pos_name=None):
+        try:
+            if type(pos_name) == str:
+                pos_existed = self.db_sess.query(Position).filter(Position.name == pos_name)
+                if pos_existed is None:
+                    pos = Position()
+                    pos.name = pos_name
+                    self.db_sess.add(pos)
+                    self.db_sess.commit()
+                    return "success"
+                else:
+                    return "duplicated position"
+            else:
+                raise TypeError
+
+        # что-то пошло не так при добавлении sqlalchemy-ей в бд
+        except sqlalchemy.exc.IntegrityError as error:
+            return "integrity error: {}".format(error)
+        # у кого-то параметра не задан атрибут
+        except sqlalchemy.exc.PendingRollbackError as error:
+            return "some parameter doesn't have needed attribute: {}".format(error)
+        # неправильные типы переданных переменных
+        except TypeError:
+            return "wrong type one of the parameters(pos_name(str))"
+
+        # добавить практиику
+
+    def add_practice(self, practice_name=None):
+        try:
+            if type(practice_name) == str:
+                practice = Practice()
+                practice.name = practice_name
+                self.db_sess.add(practice)
+                self.db_sess.commit()
+                return "success"
+            else:
+                raise TypeError
+
+        # что-то пошло не так при добавлении sqlalchemy-ей в бд
+        except sqlalchemy.exc.IntegrityError as error:
+            return "integrity error: {}".format(error)
+        # у кого-то параметра не задан атрибут
+        except sqlalchemy.exc.PendingRollbackError as error:
+            return "some parameter doesn't have needed attribute: {}".format(error)
+        # неправильные типы переданных переменных
+        except TypeError:
+            return "wrong type one of the parameters(pos_name(str))"
 
     # добавть запись о том, что человек посетил событие, при условии уникальности
     def set_visitor(self, user=None, event=None):
@@ -218,21 +297,20 @@ class SQLAlchemyRepo:
         except TypeError:
             return "wrong type one of the parameters (user(Persona), email(str), token(str))"
 
-    # добавть организацию если она уникальна
-    def add_organization(self, org_name=None):
+    def set_visitor_practice(self, visitor=None, practice=None):
         try:
-            if type(org_name) == str:
-                org_existed = self.db_sess.query(Organization).filter(Organization.name == org_name).first()
-                if org_existed is None:
-                    org = Organization()
-                    org.name = org_name
-                    self.db_sess.add(org)
+            if type(visitor) == Persona and type(practice) == Practice:
+                visitor_practice_existed = self.db_sess.query(VisitorPractice).filter(
+                    VisitorPractice.id_practice == practice.id, VisitorPractice.id_visitor == visitor.id).first()
+                if visitor_practice_existed is None:
+                    visitor_practice = VisitorPractice()
+                    visitor_practice.id_visitor = visitor.id
+                    visitor_practice.id_practice = practice.id
+                    self.db_sess.add(visitor_practice)
                     self.db_sess.commit()
                     return "success"
                 else:
-                    return "duplicated organization"
-            else:
-                raise TypeError
+                    raise TypeError
 
         # что-то пошло не так при добавлении sqlalchemy-ей в бд
         except sqlalchemy.exc.IntegrityError as error:
@@ -242,30 +320,4 @@ class SQLAlchemyRepo:
             return "some parameter doesn't have needed attribute: {}".format(error)
         # неправильные типы переданных переменных
         except TypeError:
-            return "wrong type one of the parameters(org_name(str))"
-
-    # добавить уникальную должность
-    def add_position(self, pos_name=None):
-        try:
-            if type(pos_name) == str:
-                pos_existed = self.db_sess.query(Position).filter(Position.name == pos_name)
-                if pos_existed is None:
-                    pos = Position()
-                    pos.name = pos_name
-                    self.db_sess.add(pos)
-                    self.db_sess.commit()
-                    return "success"
-                else:
-                    return "duplicated position"
-            else:
-                raise TypeError
-
-        # что-то пошло не так при добавлении sqlalchemy-ей в бд
-        except sqlalchemy.exc.IntegrityError as error:
-            return "integrity error: {}".format(error)
-        # у кого-то параметра не задан атрибут
-        except sqlalchemy.exc.PendingRollbackError as error:
-            return "some parameter doesn't have needed attribute: {}".format(error)
-        # неправильные типы переданных переменных
-        except TypeError:
-            return "wrong type one of the parameters(pos_name(str))"
+            return "wrong type one of the parameters (visitor(Persona), practice(Practice))"

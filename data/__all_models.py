@@ -5,3 +5,5 @@ from data import curators
 from data import leaders
 from data import customers
 from data import organizations
+from data import visitors_practices
+from data import practices
