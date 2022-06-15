@@ -14,7 +14,11 @@ class Practice(SqlAlchemyBase, UserMixin, SerializerMixin):
 
     id = sqlalchemy.Column(sqlalchemy.Integer,
                            primary_key=True, autoincrement=True)
+    id_org = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey("personas.id"),
+                               nullable=False)
+
     name = sqlalchemy.Column(sqlalchemy.String, nullable=False)
     date = sqlalchemy.Column(sqlalchemy.Date, default=datetime.date.today)
 
+    organizer = orm.relation("Persona", foreign_keys=[id_org])
     visitors = orm.relation("VisitorPractice")
