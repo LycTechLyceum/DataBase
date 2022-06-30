@@ -19,7 +19,7 @@ class DbApp(Flask):
         self.api = Api(self)
 
 
-db_app = DbApp(__name__, static_folder="./../static")
+db_app = DbApp(__name__)
 
 
 @db_app.errorhandler(404)
