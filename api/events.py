@@ -1,5 +1,5 @@
 from flask import jsonify
-from flask_restful import Resource, reqparse
+from flask_restful import Resource
 
 from app.app import db_app
 
@@ -9,5 +9,4 @@ class Events(Resource):
         d = {}
         for count, event in enumerate(db_app.event_repo.get_all_events()):
             d[count+1] = event.name
-        # return jsonify(d)
-        return d
+        return jsonify(d)

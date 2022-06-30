@@ -1,3 +1,4 @@
+from flask import jsonify
 from flask_restful import Resource
 from app.app import db_app
 
@@ -14,4 +15,4 @@ class Customers(Resource):
             else:
                 response[customer.personality.id]["events"].append({"id": customer.event.id,
                                                                     "name": customer.event.name})
-        return response
+        return jsonify(response)

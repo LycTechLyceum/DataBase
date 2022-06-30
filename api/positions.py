@@ -1,3 +1,4 @@
+from flask import jsonify
 from flask_restful import Resource
 from app.app import db_app
 
@@ -7,4 +8,4 @@ class Positions(Resource):
         response = {}
         for pos in db_app.cons_repo.get_all_positions():
             response[pos.id] = pos.name
-        return response
+        return jsonify(response)

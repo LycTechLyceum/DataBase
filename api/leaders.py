@@ -1,3 +1,4 @@
+from flask import jsonify
 from flask_restful import Resource
 from app.app import db_app
 
@@ -9,4 +10,4 @@ class Leaders(Resource):
         for lead in all_leaders:
             response[lead.personality.id] = {"id": lead.personality.id, "name": lead.personality.name,
                                              "surname": lead.personality.surname, "email": lead.email}
-        return response
+        return jsonify(response)

@@ -1,3 +1,4 @@
+from flask import jsonify
 from flask_restful import Resource
 from app.app import db_app
 
@@ -5,7 +6,6 @@ from app.app import db_app
 class Progers(Resource):
     def get(self):
         all_progers = db_app.cons_repo.get_all_progers()
-        # sorted(all_progers, key=lambda x: x.personality.login)
         response = {}
         for proger in all_progers:
             if proger.id_proger not in response.keys():
@@ -14,4 +14,4 @@ class Progers(Resource):
                                               "events": [{"id": proger.event.id, "name": proger.event.name}]}
             else:
                 response[proger.id_proger]["events"].append({"id": proger.event.id, "name": proger.event.name})
-        return response
+        return jsonify(response)

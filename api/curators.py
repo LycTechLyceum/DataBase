@@ -1,3 +1,4 @@
+from flask import jsonify
 from flask_restful import Resource
 from app.app import db_app
 
@@ -13,5 +14,5 @@ class Curators(Resource):
                                                      "events": [{"id": curator.event.id, "name": curator.event.name}]}
             else:
                 response[curator.personality.id]["events"].append({"id": curator.event.id,
-                                                                    "name": curator.event.name})
-        return response
+                                                                   "name": curator.event.name})
+        return jsonify(response)

@@ -6,9 +6,6 @@ from repo.sqlalchemy_events_repo import SQLAlchemyEventRepo
 from repo.sqlalchemy_organisations_repo import SQLAlchemyOrganizationRepo
 from repo.sqlalchemy_user_repo import SQLAlchemyUserRepo
 
-from data import db_session
-from data.db_session import create_session
-
 
 class DbApp(Flask):
     def __init__(self, *args, **kwargs):
@@ -18,7 +15,13 @@ class DbApp(Flask):
         self.org_repo = SQLAlchemyOrganizationRepo(db_way)
         self.cons_repo = SQLAlchemyConnectionRepo(db_way)
         self.event_repo = SQLAlchemyEventRepo(db_way)
+        self.secret_key = "super-secret"
         self.api = Api(self)
 
 
 db_app = DbApp(__name__, static_folder="./../static")
+
+
+@db_app.errorhandler(404)
+def not_found():
+    return 'Ой! Что-то пошло не так. Скорее всего, такой страницы не существует :(', 404
