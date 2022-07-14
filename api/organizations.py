@@ -22,7 +22,6 @@ class Organization(Resource):
             events_this_org = db_app.event_repo.get_events_by_org_name(name=args["name"])
             count = 0
             for event in events_this_org:
-                print(event, events_this_org, args["name"])
                 count += event.audience
             org.audience = count
 

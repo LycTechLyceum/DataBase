@@ -52,13 +52,12 @@ class SQLAlchemyEventRepo:
 
     def get_events_by_org_name(self, name=None):
         try:
-            if type(id) == int:
+            if type(name) == str:
                 return self.db_sess.query(Event).filter(Event.organization.name == name).all()
             else:
                 raise TypeError
         except TypeError:
             return "wrong type one of the parameters(id(int))"
-
 
     def get_all_events(self):
         return self.db_sess.query(Event).all()
