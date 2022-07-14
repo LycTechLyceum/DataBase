@@ -37,7 +37,7 @@ class Event(Resource):
         )
         return jsonify({"ans": add_event_callback})
 
-    def get(self, id):
+    def get(self):
         try:
             id = int(parser.parse_args()["id_event"])
             if id <= 0:
