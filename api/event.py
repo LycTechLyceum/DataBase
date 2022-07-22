@@ -7,7 +7,7 @@ parser.add_argument("event_name", required=False)
 parser.add_argument("login_cus", required=False)
 parser.add_argument("login_cur", required=False)
 parser.add_argument("org_name", required=False)
-parser.add_argument("id_event", required=False)
+parser.add_argument("id", required=False)
 
 
 class Event(Resource):
@@ -39,7 +39,7 @@ class Event(Resource):
 
     def get(self):
         try:
-            id = int(parser.parse_args()["id_event"])
+            id = int(parser.parse_args()["id"])
             if id <= 0:
                 raise TypeError
         except TypeError:

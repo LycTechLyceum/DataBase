@@ -51,13 +51,16 @@ class SQLAlchemyEventRepo:
             return "wrong type one of the parameters(id(int))"
 
     def get_events_by_org_name(self, name=None):
-        try:
-            if type(name) == str:
-                return self.db_sess.query(Event).filter(Event.organization.name == name).all()
-            else:
-                raise TypeError
-        except TypeError:
-            return "wrong type one of the parameters(id(int))"
+        org = self.db_sess.query(Organization).filter(Organization.name == name).first()
+        print(org)
+        return org.events
+        # try:
+        #     if type(name) == str:
+        #         return self.db_sess.query(Event).filter(Event.organization.name == name).all()
+        #     else:
+        #         raise TypeError
+        # except TypeError:
+        #     return "wrong type one of the parameters(id(int))"
 
     def get_all_events(self):
         return self.db_sess.query(Event).all()

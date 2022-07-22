@@ -24,28 +24,28 @@ from api.visitor_practices import VisitorPractice
 from api.visitors_practices import VisitorsPractices
 
 
-db_app.api.add_resource(Curator, "/api/post-curator")
-db_app.api.add_resource(Curators, "/api/get-curators")
-db_app.api.add_resource(Customer, "/api/post-customer")
-db_app.api.add_resource(Customers, "/api/get-customers")
-db_app.api.add_resource(Event, "/api/post-event")
-db_app.api.add_resource(Events, "/api/get-events")
-db_app.api.add_resource(Leader, "/api/post-leader")
-db_app.api.add_resource(Leaders, "/api/get-leaders")
-db_app.api.add_resource(Organization, "/api/post-organization")
-db_app.api.add_resource(Organizations, "/api/get-organizations")
-db_app.api.add_resource(Position, "/api/position")
-db_app.api.add_resource(Positions, "/api/get-positions")
-db_app.api.add_resource(Practice, "/api/post-practice")
-db_app.api.add_resource(Practices, "/api/get-practices")
-db_app.api.add_resource(Proger, "/api/post-proger")
-db_app.api.add_resource(Progers, "/api/get-progers")
-db_app.api.add_resource(User, "/api/post-user")
-db_app.api.add_resource(Users, "/api/get-users")
-db_app.api.add_resource(Visitor, "/api/post-visitor")
-db_app.api.add_resource(Visitors, "/api/get-visitors")
-db_app.api.add_resource(VisitorPractice, "/api/post-visitor-practice")
-db_app.api.add_resource(VisitorsPractices, "/api/get-visitors-practices")
+db_app.api.add_resource(Curator, "/api/curator")  # ok
+db_app.api.add_resource(Curators, "/api/curators")  # ok
+db_app.api.add_resource(Customer, "/api/customer")  # ok
+db_app.api.add_resource(Customers, "/api/customers")  # ok
+db_app.api.add_resource(Event, "/api/event")  # ok
+db_app.api.add_resource(Events, "/api/events")  # ok
+db_app.api.add_resource(Leader, "/api/leader")  # ok
+db_app.api.add_resource(Leaders, "/api/leaders")  # ok
+db_app.api.add_resource(Organization, "/api/organization")  # ok
+db_app.api.add_resource(Organizations, "/api/organizations")  # ok
+db_app.api.add_resource(Position, "/api/position")  # ok
+db_app.api.add_resource(Positions, "/api/positions")  # ok
+db_app.api.add_resource(Practice, "/api/practice")  # ok
+db_app.api.add_resource(Practices, "/api/practices")  # ok
+db_app.api.add_resource(Proger, "/api/proger")  # ok
+db_app.api.add_resource(Progers, "/api/progers")  # ok
+db_app.api.add_resource(User, "/api/user")  # ok
+db_app.api.add_resource(Users, "/api/users")  # ok
+db_app.api.add_resource(Visitor, "/api/visitor")  # ok
+db_app.api.add_resource(Visitors, "/api/visitors")  # ok
+db_app.api.add_resource(VisitorPractice, "/api/visitor-practice")  # ok
+db_app.api.add_resource(VisitorsPractices, "/api/visitors-practices")  # ok
 
 
 if __name__ == '__main__':

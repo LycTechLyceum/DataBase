@@ -3,7 +3,7 @@ from flask_restful import Resource, reqparse
 from app.app import db_app
 
 parser = reqparse.RequestParser()
-parser.add_argument("id_user", required=False)
+parser.add_argument("id", required=False)
 parser.add_argument("name", required=False)
 parser.add_argument("surname", required=False)
 parser.add_argument("grade", required=False)
@@ -16,7 +16,7 @@ class User(Resource):
     def get(self):
         args = parser.parse_args()
         try:
-            id = int(args["id_user"])
+            id = int(args["id"])
             if id <= 0:
                 raise TypeError
         except TypeError:

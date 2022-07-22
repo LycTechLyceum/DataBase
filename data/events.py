@@ -9,7 +9,7 @@ from sqlalchemy_serializer import SerializerMixin
 
 # таблица, хранящая данные о каждом заказе
 class Event(SqlAlchemyBase, SerializerMixin):
-    __tablename__ = "events"  #название таблицы
+    __tablename__ = "events"  # название таблицы
 
     id = sqlalchemy.Column(sqlalchemy.Integer,
                            primary_key=True, autoincrement=True)  # id - первичный ключ
@@ -25,6 +25,6 @@ class Event(SqlAlchemyBase, SerializerMixin):
     date = sqlalchemy.Column(sqlalchemy.Date, default=datetime.date.today)  # дата создания
     
     # выстраиваем отношения с другими таблицами
-    organization = orm.relation("Organization")
+    organization = orm.relation("Organization", back_populates="events")
     customer = orm.relation("Persona", foreign_keys=[id_customer])
     curator = orm.relation("Persona", foreign_keys=[id_curator])

@@ -12,7 +12,7 @@ class Leader(Resource):
     def post(self):
         args = parser.parse_args()
         try:
-            id_user, token, email = args["id_user"], args["token"], args["email"]
+            id_user, token, email = int(args["id_user"]), args["token"], args["email"]
             if id_user <= 0:
                 raise TypeError
         except TypeError:

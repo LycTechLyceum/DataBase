@@ -11,7 +11,7 @@ class Customer(Resource):
     def post(self):
         args = parser.parse_args()
         try:
-            id_user, id_event = args["id_user"], args["id_event"]
+            id_user, id_event = int(args["id_user"]), int(args["id_event"])
             if id_user <= 0 or id_event <= 0:
                 raise TypeError
         except TypeError:
@@ -21,5 +21,5 @@ class Customer(Resource):
         if user is None:
             return jsonify({"ans": "there is no user with id {}".format(id_user)})
         if event is None:
-            return jsonify({"ans": "there is no practice with id {}".format(id_event)})
+            return jsonify({"ans": "there is no event with id {}".format(id_event)})
         return jsonify({"ans": db_app.cons_repo.set_customer(user=user, event=event)})

@@ -11,7 +11,7 @@ class Curator(Resource):
     def post(self):
         args = parser.parse_args()
         try:
-            id_user, id_event = args["id_user"], args["id_event"]
+            id_user, id_event = int(args["id_user"]), int(args["id_event"])
             if id_user <= 0 or id_event <= 0:
                 raise TypeError
         except TypeError:

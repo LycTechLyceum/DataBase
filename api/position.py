@@ -3,13 +3,13 @@ from flask_restful import Resource, reqparse
 from app.app import db_app
 
 parser = reqparse.RequestParser()
-parser.add_argument("pos_name", required=False)
+parser.add_argument("name", required=False)
 parser.add_argument("id", required=False)
 
 
 class Position(Resource):
     def post(self):
-        pos_name = parser.parse_args()["pos_name"]
+        pos_name = parser.parse_args()["name"]
         return jsonify({"ans": db_app.cons_repo.add_position(pos_name)})
 
     def get(self):

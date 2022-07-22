@@ -19,9 +19,9 @@ class Organization(Resource):
         org, error = db_app.org_repo.get_org_by_name(name=args["name"])
         if error is None and org is not None:
 
-            events_this_org = db_app.event_repo.get_events_by_org_name(name=args["name"])
+            # events_this_org = db_app.event_repo.get_events_by_org_name(name=args["name"])
             count = 0
-            for event in events_this_org:
+            for event in org.events:
                 count += event.audience
             org.audience = count
 

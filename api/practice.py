@@ -6,7 +6,7 @@ from app.app import db_app
 parser = reqparse.RequestParser()
 parser.add_argument("id_org", required=False)
 parser.add_argument("name", required=False)
-parser.add_argument("id_practice", required=False)
+parser.add_argument("id", required=False)
 
 
 class Practice(Resource):
@@ -25,7 +25,8 @@ class Practice(Resource):
 
     def get(self):
         try:
-            id_practice = int(parser.parse_args()["id_practice"])
+            print(parser.parse_args()["id"])
+            id_practice = int(parser.parse_args()["id"])
             if id_practice <= 0:
                 raise TypeError
         except TypeError:
