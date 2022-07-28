@@ -17,6 +17,6 @@ class Checker(Resource):
         if not user:
             return jsonify({"ans": False})
         elif hashed_password != user.hashed_password:
-            return jsonify({{"ans": False}})
+            return jsonify({"ans": False})
         else:
-            return jsonify({{"ans": True}})
+            return jsonify({"ans": True})
