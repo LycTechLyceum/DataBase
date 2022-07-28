@@ -57,7 +57,7 @@ class SQLAlchemyUserRepo:
                     per.id_position = position.id
                     self.db_sess.add(per)
                     self.db_sess.commit()
-                    return "success"
+                    return {"ans": "success", "heashed_password": per.hashed_password}
                 else:
                     raise TypeError
             else:
