@@ -16,7 +16,7 @@ class Checker(Resource):
         user = db_app.user_repo.get_persona_by_login(login)
         if not user:
             return jsonify({"ans": False})
-        elif hashed_password != user.password:
+        elif hashed_password != user.hashed_password:
             return jsonify({{"ans": False}})
         else:
             return jsonify({{"ans": True}})

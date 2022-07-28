@@ -10,8 +10,6 @@ parser.add_argument("id", required=False)
 
 
 class Practice(Resource):
-
-
     def post(self):
         args = parser.parse_args()
         try:
