@@ -1,5 +1,5 @@
 import sqlalchemy.exc
-from werkzeug.security import generate_password_hash
+import hashlib
 
 from data import db_session
 from data.curators import Curator
@@ -53,7 +53,9 @@ class SQLAlchemyUserRepo:
                     per.surname = surname
                     per.grade = grade
                     per.login = login
-                    per.hashed_password = generate_password_hash(password)
+
+                    hash_object = hashlib.md5(password.encode())
+                    per.hashed_password = hash_object.hexdigest()
                     per.id_position = position.id
                     self.db_sess.add(per)
                     self.db_sess.commit()

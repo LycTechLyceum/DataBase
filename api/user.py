@@ -53,6 +53,7 @@ class User(Resource):
             return jsonify({"ans": "there is no position with id {}".format(id_pos)})
         elif type(pos) == str:
             return jsonify({"ans": pos})
+
         add_user_callback = db_app.user_repo.add_user(
             name=name,
             surname=surname,
