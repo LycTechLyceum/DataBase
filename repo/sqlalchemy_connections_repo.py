@@ -307,7 +307,7 @@ class SQLAlchemyConnectionRepo:
             return "wrong type one of the parameters (user(Persona), event(Event))"
 
     def del_customer(self, user_id=None, event_id=None):
-        self.db_sess.query(Customer).filter(Customer.id_curator == user_id, Customer.id_event == event_id).delete()
+        self.db_sess.query(Customer).filter(Customer.id_customer == user_id, Customer.id_event == event_id).delete()
         self.db_sess.commit()
         return "success"
 
