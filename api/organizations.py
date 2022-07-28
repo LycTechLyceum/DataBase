@@ -28,7 +28,7 @@ class Organization(Resource):
             arr_events = []
             for event in org.events:
                 arr_events.append({"id": event.id, "name": event.name})
-            arr_customers = [{"id": customer.personality.id, "namme": customer.personality.name} for customer
+            arr_customers = [{"id": customer.personality.id, "name": customer.personality.name} for customer
                              in db_app.cons_repo.get_customers_by_org(org=org)]
 
             return jsonify({"id": org.id, "name": org.name, "audience": org.audience,
@@ -40,6 +40,14 @@ class Organization(Resource):
 
         else:
             return jsonify({"ans": error})
+
+    def delete(self):
+        args = parser.parse_args()
+        org = db_app.org_repo.get_org_by_name(name=args["name"])
+        for event in org.events:
+            db_app.event_repo.del_event(event.id)
+        return jsonify({"ans": db_app.org_repo.del_org(org.id)})
+
 
 
 class Organizations(Resource):

@@ -8,6 +8,9 @@ parser.add_argument("id_event", required=True)
 
 
 class Proger(Resource):
+    def delete(self):
+        pass
+
     def post(self):
         args = parser.parse_args()
         try:

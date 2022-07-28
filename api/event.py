@@ -71,4 +71,18 @@ class Event(Resource):
                             "progers": devs, "visitors": visits}
                 return jsonify(response)
 
+    def delete(self):
+        try:
+            id = int(parser.parse_args()["id"])
+            if id <= 0:
+                raise TypeError
+        except TypeError:
+            return jsonify({"ans": "id event must be integer"})
+        event = db_app.event_repo.get_event_by_id(id=id)
+        if not event:
+            return jsonify({"ans": "there is no event with id {}".format(id)})
+        else:
+            db_app.cons_repo.del_curator(user_id=event.curator.id, event_id=id)
+            db_app.cons_repo.del_customer(user_id=event.customer.id, event_id=id)
+            return jsonify({"ans": db_app.event_repo.del_event(id)})
 

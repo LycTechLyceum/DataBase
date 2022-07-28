@@ -28,3 +28,8 @@ class Position(Resource):
         for person in pos.personas:
             participants.append({"id": person.id, "name": person.name, "surname": person.surname})
         return jsonify({"id": pos.id, "name": pos.name, "participants": participants})
+
+    def delete(self):
+        pos_name = parser.parse_args()["name"]
+        return jsonify({"ans": db_app.cons_repo.del_position(pos_name)})
+

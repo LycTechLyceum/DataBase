@@ -13,14 +13,6 @@ class Leader(SqlAlchemyBase, UserMixin, SerializerMixin):
 
     id_leader = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey("personas.id"),
                                   nullable=False, primary_key=True)
-    hashed_secret_token = sqlalchemy.Column(sqlalchemy.String, nullable=False)  #  секретный токен глав)
     email = sqlalchemy.Column(sqlalchemy.String)
     personality = orm.relation("Persona")
-    
-    #  создаем хеш-токена
-    def set_hash(self, token):
-        self.hashed_secret_token = generate_password_hash(token)
 
-    #  проверяем, подходлит ли токен
-    def check_hash(self, token):
-        return check_password_hash(self.hashed_secret_token, token)

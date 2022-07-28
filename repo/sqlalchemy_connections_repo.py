@@ -102,6 +102,14 @@ class SQLAlchemyConnectionRepo:
         except TypeError:
             return "wrong type one of the parameters(pos_name(str))"
 
+    def del_position(self, pos_name=None):
+        pos_existed = self.db_sess.query(Position).filter(Position.name == pos_name).first()
+        if pos_existed is None:
+            return "no position with name {}".format(pos_name)
+        self.db_sess.query(Position).filter(Position.name == pos_name).delete()
+        self.db_sess.commit()
+        return "success"
+
     def get_all_practices(self):
         return self.db_sess.query(Practice).all()
 
@@ -265,6 +273,11 @@ class SQLAlchemyConnectionRepo:
         except TypeError:
             return "wrong type one of the parameters (user(Persona), email(str), token(str))"
 
+    def del_lead(self, user_id):
+        self.db_sess.query(Leader).filter(Leader.id_leader == user_id).delete()
+        self.db_sess.commit()
+        return "success"
+
 # добавить в табличку заказов запись о заказе
     def set_customer(self, user=None, event=None):
         try:
@@ -293,7 +306,12 @@ class SQLAlchemyConnectionRepo:
         except TypeError:
             return "wrong type one of the parameters (user(Persona), event(Event))"
 
-# добавить в табличку кураторов запись о курировании
+    def del_customer(self, user_id=None, event_id=None):
+        self.db_sess.query(Customer).filter(Customer.id_curator == user_id, Customer.id_event == event_id).delete()
+        self.db_sess.commit()
+        return "success"
+
+    # добавить в табличку кураторов запись о курировании
     def set_curator(self, user=None, event=None):
         try:
             if type(user) == Persona and type(event) == Event:
@@ -318,3 +336,8 @@ class SQLAlchemyConnectionRepo:
         # неправильные типы переданных переменных
         except TypeError:
             return "wrong type one of the parameters (user(Persona), event(Event))"
+
+    def del_curator(self, user_id=None, event_id=None):
+        self.db_sess.query(Curator).filter(Curator.id_curator == user_id, Curator.id_event == event_id).delete()
+        self.db_sess.commit()
+        return "success"

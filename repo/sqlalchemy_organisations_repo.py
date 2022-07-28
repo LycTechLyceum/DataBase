@@ -55,3 +55,8 @@ class SQLAlchemyOrganizationRepo:
     # возврящает все организации
     def get_all_organizations(self):
         return self.db_sess.query(Organization).all()
+
+    def del_org(self, id):
+        self.db_sess.query(Organization).filter(Organization.id == id).delete()
+        self.db_sess.commit()
+        return "success"

@@ -22,6 +22,8 @@ from api.visitor import Visitor
 from api.visitors import Visitors
 from api.visitor_practices import VisitorPractice
 from api.visitors_practices import VisitorsPractices
+from api.check_password import Checker
+from api.check_token import CheckerToken
 
 
 db_app.api.add_resource(Curator, "/api/curator")  # ok
@@ -46,7 +48,12 @@ db_app.api.add_resource(Visitor, "/api/visitor")  # ok
 db_app.api.add_resource(Visitors, "/api/visitors")  # ok
 db_app.api.add_resource(VisitorPractice, "/api/visitor-practice")  # ok
 db_app.api.add_resource(VisitorsPractices, "/api/visitors-practices")  # ok
+db_app.api.add_resource(Checker, "/api/check-password")
+db_app.api.add_resource(CheckerToken, "/api/check-token")
 
+
+
+#  TODO: добавть delete всяких вещей
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
