@@ -22,6 +22,6 @@ class CheckerToken(Resource):
         elif user.position.id != 1:  # важный моммент, первой всегда должны быть долдность куратора
             return jsonify({{"error": True, "ans": "wrong position"}})
         elif hashed_token != TOKEN:
-            return jsonify({{"error": True, "ans": "wrong token"}})
+            return jsonify({"error": True, "ans": "wrong token"})
         else:
-            return jsonify({{"error": False, "ans": "success"}})
+            return jsonify({"error": False, "ans": "success"})
