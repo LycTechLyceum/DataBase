@@ -8,6 +8,22 @@ parser.add_argument("id_practice", required=True)
 
 
 class VisitorPractice(Resource):
+    def delete(self):
+        args = parser.parse_args()
+        try:
+            id_user, id_practice = int(args["id_user"]), int(args["id_practice"])
+            if id_user <= 0 or id_practice <= 0:
+                raise TypeError
+        except TypeError:
+            return jsonify({"ans": "all id must be integers"})
+        user = db_app.user_repo.get_persona_by_id(id=id_user)
+        practice = db_app.cons_repo.get_practice_by_id(id=id_practice)
+        if user is None:
+            return jsonify({"ans": "there is no user with id {}".format(id_user)})
+        elif practice is None:
+            return jsonify({"ans": "there is no practice with id {}".format(id_practice)})
+        return jsonify({"ans": db_app.cons_repo.delete_visitor_practice(id_user, id_practice)})
+
     def post(self):
         args = parser.parse_args()
         try:

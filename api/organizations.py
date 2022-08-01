@@ -43,8 +43,11 @@ class Organization(Resource):
 
     def delete(self):
         args = parser.parse_args()
-        org = db_app.org_repo.get_org_by_name(name=args["name"])
+        org, error = db_app.org_repo.get_org_by_name(name=args["name"])
+        print(org, error)
         for event in org.events:
+            db_app.cons_repo.del_curator(user_id=event.curator.id, event_id=event.id)
+            db_app.cons_repo.del_customer(user_id=event.customer.id, event_id=event.id)
             db_app.event_repo.del_event(event.id)
         return jsonify({"ans": db_app.org_repo.del_org(org.id)})
 

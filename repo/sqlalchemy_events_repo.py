@@ -1,7 +1,7 @@
 import sqlalchemy.exc
-
 from data import db_session
 from data.curators import Curator
+from data.customers import Customer
 from data.db_session import create_session
 from data.events import Event
 from data.organizations import Organization
@@ -22,11 +22,24 @@ class SQLAlchemyEventRepo:
                     type(per_cur) != Persona or type(per_cus) != Persona:
                 raise TypeError
             else:
+
                 event.name = event_name
                 event.id_org = org.id
                 event.id_customer = per_cus.id
                 event.id_curator = per_cur.id
                 self.db_sess.add(event)
+                self.db_sess.commit()
+
+                customer = Customer()
+                customer.id_customer = per_cus.id
+                customer.id_event = event.id
+                self.db_sess.add(customer)
+                self.db_sess.commit()
+
+                curator = Curator()
+                curator.id_curator = per_cur.id
+                curator.id_event = event.id
+                self.db_sess.add(curator)
                 self.db_sess.commit()
                 return "success"
 

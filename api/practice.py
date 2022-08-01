@@ -10,6 +10,19 @@ parser.add_argument("id", required=False)
 
 
 class Practice(Resource):
+    def delete(self):
+        args = parser.parse_args()
+        try:
+            id = int(args["id"])
+            if id <= 0:
+                raise TypeError
+        except TypeError:
+            return jsonify({"ans": "id org must be integer"})
+        org = db_app.cons_repo.get_practice_by_id(id=id)
+        if org is None:
+            return jsonify({"ans": "there is no practice with id {}".format(id)})
+        return jsonify({"ans": db_app.cons_repo.delete_practice(id)})
+
     def post(self):
         args = parser.parse_args()
         try:

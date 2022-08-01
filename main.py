@@ -51,8 +51,6 @@ db_app.api.add_resource(VisitorsPractices, "/api/visitors-practices")  # ok
 db_app.api.add_resource(Checker, "/api/check-password")
 db_app.api.add_resource(CheckerToken, "/api/check-token")
 
-
-
 #  TODO: добавть delete всяких вещей
 
 if __name__ == '__main__':

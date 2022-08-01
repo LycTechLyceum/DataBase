@@ -162,6 +162,12 @@ class SQLAlchemyConnectionRepo:
         except TypeError:
             return "wrong type one of the parameters(practice_org(Persona), pos_name(str))"
 
+    def delete_practice(self, practice_id):
+        self.db_sess.query(VisitorPractice).filter(VisitorPractice.id_practice == practice_id).delete()
+        self.db_sess.query(Practice).filter(Practice.id == practice_id).delete()
+        self.db_sess.commit()
+        return "success"
+
     # добавить в табличку активностей разрабов запись о работе над проектом
     def set_proger(self, user=None, event=None):
         try:
@@ -179,6 +185,24 @@ class SQLAlchemyConnectionRepo:
                     return "duplicated note"
             else:
                 raise TypeError
+
+        # что-то пошло не так при добавлении sqlalchemy-ей в бд
+        except sqlalchemy.exc.IntegrityError as error:
+            return "integrity error: {}".format(error)
+        # у кого-то параметра не задан атрибут
+        except sqlalchemy.exc.PendingRollbackError as error:
+            return "some parameter doesn't have needed attribute: {}".format(error)
+        # неправильные типы переданных переменных
+        except TypeError:
+            return "wrong type one of the parameters (user(Persona), event(Event))"
+
+    def delete_proger(self, user=None, event=None):
+        try:
+            if type(user) != Persona or type(event) != Event:
+                raise TypeError
+            self.db_sess.query(Proger).filter(Proger.id_proger == user.id).delete()
+            self.db_sess.commit()
+            return "success"
 
         # что-то пошло не так при добавлении sqlalchemy-ей в бд
         except sqlalchemy.exc.IntegrityError as error:
@@ -219,6 +243,11 @@ class SQLAlchemyConnectionRepo:
         except TypeError:
             return "wrong type one of the parameters (user(Persona), event(Event))"
 
+    def delete_visitor(self, user_id, event_id):
+        self.db_sess.query(Visitor).filter(Visitor.id_visitor == user_id, Visitor.id_event == event_id).delete()
+        self.db_sess.commit()
+        return "success"
+
     # добавить посетителя практикума
     def set_visitor_practice(self, visitor=None, practice=None):
         try:
@@ -246,6 +275,12 @@ class SQLAlchemyConnectionRepo:
         # неправильные типы переданных переменных
         except TypeError:
             return "wrong type one of the parameters (visitor(Persona), practice(Practice))"
+
+    def delete_visitor_practice(self, user_id, practice_id):
+        self.db_sess.query(VisitorPractice).filter(VisitorPractice.id_practice == practice_id,
+                                                   VisitorPractice.id_visitor == user_id)
+        self.db_sess.commit()
+        return "success"
 
     # добавить данные для лидера
     def set_leader(self, user=None, email=None, token=None):
@@ -278,7 +313,7 @@ class SQLAlchemyConnectionRepo:
         self.db_sess.commit()
         return "success"
 
-# добавить в табличку заказов запись о заказе
+    # добавить в табличку заказов запись о заказе
     def set_customer(self, user=None, event=None):
         try:
             if type(user) == Persona and type(event) == Event:

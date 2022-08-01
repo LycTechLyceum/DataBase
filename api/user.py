@@ -13,6 +13,21 @@ parser.add_argument("id_pos", required=False)
 
 
 class User(Resource):
+    def delete(self):
+        args = parser.parse_args()
+        try:
+            id = int(args["id"])
+            if id <= 0:
+                raise TypeError
+        except TypeError:
+            return jsonify({"ans": "id must be integer"})
+        persona = db_app.user_repo.get_persona_by_id(id)
+        if persona is None:
+            return {"ans": "there is no user with id {}".format(id)}
+        elif type(persona) == str:
+            return {"ans": persona}
+        return {"ans": db_app.user_repo.delete_user(persona.id)}
+
     def get(self):
         args = parser.parse_args()
         try:

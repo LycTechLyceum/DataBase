@@ -76,6 +76,11 @@ class SQLAlchemyUserRepo:
             return "wrong type one of the parameters (name(str), surname(str)," \
                    " grade(str), login(str), password(str), position(Position)"
 
+    def delete_user(self, id):
+        self.db_sess.query(Persona).filter(Persona.id == id).delete()
+        self.db_sess.commit()
+        return "success"
+
 
 
 
