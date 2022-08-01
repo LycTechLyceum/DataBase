@@ -7,5 +7,7 @@ class Practices(Resource):
     def get(self):
         response = {}
         for practice in db_app.cons_repo.get_all_practices():
-            response[practice.id] = {"name": practice.name, "date": practice.date, "id": practice.id}
+            response[practice.id] = {"name": practice.name,
+                                     "date": f"{practice.date.date}.{practice.date.month}.{practice.date.year}",
+                                     "id": practice.id}
         return jsonify(response)
