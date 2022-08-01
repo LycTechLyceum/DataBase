@@ -15,6 +15,8 @@ class Checker(Resource):
         hash_object = hashlib.md5(args["password"].encode())
         hashed_password = hash_object.hexdigest()
         user = db_app.user_repo.get_persona_by_login(login)
+        if user is None:
+            return jsonify({"ans": False, "password": args["password"], "hashed password": hashed_password})
         if hashed_password != user.hashed_password:
             return jsonify({"ans": False, "password": args["password"], "hashed password": hashed_password})
         else:
