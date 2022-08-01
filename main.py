@@ -51,7 +51,7 @@ db_app.api.add_resource(VisitorPractice, "/api/visitor-practice")  # ok
 db_app.api.add_resource(VisitorsPractices, "/api/visitors-practices")  # ok
 db_app.api.add_resource(Checker, "/api/check-password")
 db_app.api.add_resource(CheckerToken, "/api/check-token")
-db_app.api.add_resource(UserByLogin, "/api/user-by-login")
+db_app.api.add_resource(UserByLogin, "/api/user-data")
 
 
 #  TODO: добавть delete всяких вещей
