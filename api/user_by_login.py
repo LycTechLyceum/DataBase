@@ -6,7 +6,7 @@ parser = reqparse.RequestParser()
 parser.add_argument("login", required=True)
 
 
-class User(Resource):
+class UserData(Resource):
     def get(self):
         args = parser.parse_args()
         login = args["login"]
