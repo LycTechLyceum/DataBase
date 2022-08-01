@@ -12,7 +12,7 @@ class UserData(Resource):
         login = args["login"]
         persona = db_app.user_repo.get_persona_by_login(login)
         if persona is None:
-            return {"ans": "there is no user with id {}".format(id)}
+            return {"ans": "there is no user with login {}".format(login)}
         elif type(persona) == str:
             return {"ans": persona}
 
