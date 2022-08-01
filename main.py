@@ -24,6 +24,7 @@ from api.visitor_practices import VisitorPractice
 from api.visitors_practices import VisitorsPractices
 from api.check_password import Checker
 from api.check_token import CheckerToken
+from api.user_by_login import User as UserByLogin
 
 
 db_app.api.add_resource(Curator, "/api/curator")  # ok
@@ -50,6 +51,8 @@ db_app.api.add_resource(VisitorPractice, "/api/visitor-practice")  # ok
 db_app.api.add_resource(VisitorsPractices, "/api/visitors-practices")  # ok
 db_app.api.add_resource(Checker, "/api/check-password")
 db_app.api.add_resource(CheckerToken, "/api/check-token")
+db_app.api.add_resource(UserByLogin, "/api/user-by-login")
+
 
 #  TODO: добавть delete всяких вещей
 
