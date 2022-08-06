@@ -15,6 +15,7 @@ from data.practices import Practice
 from data.progers import Proger
 from data.visitors import Visitor
 from data.visitors_practices import VisitorPractice
+from data.stateless_events import StatelessEvents
 
 
 class SQLAlchemyConnectionRepo:
@@ -376,3 +377,25 @@ class SQLAlchemyConnectionRepo:
         self.db_sess.query(Curator).filter(Curator.id_curator == user_id, Curator.id_event == event_id).delete()
         self.db_sess.commit()
         return "success"
+
+    def get_st_event_by_id(self, id):
+        return self.db_sess.query(StatelessEvents).filter(StatelessEvents.id == id).first()
+
+    def get_all_st_events(self):
+        return self.db_sess.query(StatelessEvents).all()
+
+    def add_stateless_events(self, title, description, contact, user_id):
+        st_event = StatelessEvents()
+        st_event.id_customer = user_id
+        st_event.title = title
+        st_event.description = description
+        st_event.contact = contact
+        self.db_sess.add(st_event)
+        self.db_sess.commit()
+        return "success"
+
+    def delete_stateless_events(self, id):
+        self.db_sess.query(StatelessEvents).filter(StatelessEvents.id == id).delete()
+        self.db_sess.commit()
+        return "success"
+

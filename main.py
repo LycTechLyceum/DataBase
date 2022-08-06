@@ -25,6 +25,7 @@ from api.visitors_practices import VisitorsPractices
 from api.check_password import Checker
 from api.check_token import CheckerToken
 from api.user_by_login import UserData
+from api.stateless_event import StatelessEvent, StatelessEvents
 
 
 db_app.api.add_resource(Curator, "/api/curator")  # ok
@@ -52,6 +53,8 @@ db_app.api.add_resource(VisitorsPractices, "/api/visitors-practices")  # ok
 db_app.api.add_resource(Checker, "/api/check-password")
 db_app.api.add_resource(CheckerToken, "/api/check-token")
 db_app.api.add_resource(UserData, "/api/user-data")
+db_app.api.add_resource(StatelessEvent, "/api/stateless-event")
+db_app.api.add_resource(StatelessEvents, "/api/stateless-events")
 
 
 #  TODO: добавть delete всяких вещей
