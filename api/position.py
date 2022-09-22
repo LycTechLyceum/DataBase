@@ -1,6 +1,6 @@
 from flask import jsonify
 from flask_restful import Resource, reqparse
-from app.app import db_app
+from app.app import application
 
 parser = reqparse.RequestParser()
 parser.add_argument("name", required=False)
@@ -10,7 +10,7 @@ parser.add_argument("id", required=False)
 class Position(Resource):
     def post(self):
         pos_name = parser.parse_args()["name"]
-        return jsonify({"ans": db_app.cons_repo.add_position(pos_name)})
+        return jsonify({"ans": application.cons_repo.add_position(pos_name)})
 
     def get(self):
         try:
@@ -19,7 +19,7 @@ class Position(Resource):
                 raise TypeError
         except TypeError:
             return jsonify({"ans": "id must be integer"})
-        pos = db_app.cons_repo.get_pos_by_id(id)
+        pos = application.cons_repo.get_pos_by_id(id)
         if pos is None:
             return jsonify({"ans": "there is no position with id {}".format(id)})
         elif type(pos) == str:
@@ -31,5 +31,5 @@ class Position(Resource):
 
     def delete(self):
         pos_name = parser.parse_args()["name"]
-        return jsonify({"ans": db_app.cons_repo.del_position(pos_name)})
+        return jsonify({"ans": application.cons_repo.del_position(pos_name)})
 

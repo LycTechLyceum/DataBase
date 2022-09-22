@@ -1,11 +1,11 @@
 from flask import jsonify
 from flask_restful import Resource
-from app.app import db_app
+from app.app import application
 
 
 class Progers(Resource):
     def get(self):
-        all_progers = db_app.cons_repo.get_all_progers()
+        all_progers = application.cons_repo.get_all_progers()
         response = {}
         for proger in all_progers:
             if proger.id_proger not in response.keys():

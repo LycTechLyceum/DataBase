@@ -1,6 +1,6 @@
 from flask import jsonify
 from flask_restful import Resource, reqparse
-from app.app import db_app
+from app.app import application
 
 parser = reqparse.RequestParser()
 parser.add_argument("id_user", required=True)
@@ -16,13 +16,13 @@ class Proger(Resource):
                 raise TypeError
         except TypeError:
             return jsonify({"ans": "all id must be integers"})
-        user = db_app.user_repo.get_persona_by_id(id=user_id)
-        event = db_app.event_repo.get_event_by_id(id=event_id)
+        user = application.user_repo.get_persona_by_id(id=user_id)
+        event = application.event_repo.get_event_by_id(id=event_id)
         if user is None:
             return jsonify({"ans": "there is no user with id {}".format(user_id)})
         elif event is None:
             return jsonify({"ans": "there is no event with id {}".format(event_id)})
-        return jsonify({"ans": db_app.cons_repo.delete_proger(user=user, event=event)})
+        return jsonify({"ans": application.cons_repo.delete_proger(user=user, event=event)})
 
     def post(self):
         args = parser.parse_args()
@@ -32,10 +32,10 @@ class Proger(Resource):
                 raise TypeError
         except TypeError:
             return jsonify({"ans": "all id must be integers"})
-        user = db_app.user_repo.get_persona_by_id(id=user_id)
-        event = db_app.event_repo.get_event_by_id(id=event_id)
+        user = application.user_repo.get_persona_by_id(id=user_id)
+        event = application.event_repo.get_event_by_id(id=event_id)
         if user is None:
             return jsonify({"ans": "there is no user with id {}".format(user_id)})
         elif event is None:
             return jsonify({"ans": "there is no event with id {}".format(event_id)})
-        return jsonify({"ans": db_app.cons_repo.set_proger(user=user, event=event)})
+        return jsonify({"ans": application.cons_repo.set_proger(user=user, event=event)})

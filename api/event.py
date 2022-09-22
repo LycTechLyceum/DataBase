@@ -1,6 +1,6 @@
 from flask import jsonify
 from flask_restful import Resource, reqparse
-from app.app import db_app
+from app.app import application
 
 parser = reqparse.RequestParser()
 parser.add_argument("event_name", required=False)
@@ -18,9 +18,9 @@ class Event(Resource):
         login_cur = args["login_cur"]
         login_cus = args["login_cus"]
         org_name = args["org_name"]
-        cus = db_app.user_repo.get_persona_by_login(login=login_cus)
-        cur = db_app.user_repo.get_persona_by_login(login=login_cur)
-        org, error = db_app.org_repo.get_org_by_name(name=org_name)
+        cus = application.user_repo.get_persona_by_login(login=login_cus)
+        cur = application.user_repo.get_persona_by_login(login=login_cur)
+        org, error = application.org_repo.get_org_by_name(name=org_name)
 
         if cus is None:
             return jsonify({"error": "there is no user with login {}".format(login_cus)})
@@ -29,7 +29,7 @@ class Event(Resource):
         elif org is None:
             return jsonify({"error": "there is no organization with name {}".format(org_name)})
 
-        add_event_callback = db_app.event_repo.add_event(
+        add_event_callback = application.event_repo.add_event(
             event_name=name,
             per_cus=cus,
             per_cur=cur,
@@ -44,13 +44,13 @@ class Event(Resource):
                 raise TypeError
         except TypeError:
             return jsonify({"ans": "id event must be integer"})
-        event = db_app.event_repo.get_event_by_id(id=id)
+        event = application.event_repo.get_event_by_id(id=id)
         if event is not None:
-            progers = db_app.cons_repo.get_progers_by_event_id(id=id)
+            progers = application.cons_repo.get_progers_by_event_id(id=id)
             if type(progers) == str:
                 return jsonify({"ans":  progers})
 
-            visitors = db_app.cons_repo.get_visitors_by_event_id(id=id)
+            visitors = application.cons_repo.get_visitors_by_event_id(id=id)
             if type(visitors) == str:
                 return {"ans": visitors}
 
@@ -78,11 +78,11 @@ class Event(Resource):
                 raise TypeError
         except TypeError:
             return jsonify({"ans": "id event must be integer"})
-        event = db_app.event_repo.get_event_by_id(id=id)
+        event = application.event_repo.get_event_by_id(id=id)
         if not event:
             return jsonify({"ans": "there is no event with id {}".format(id)})
         else:
-            db_app.cons_repo.del_curator(user_id=event.curator.id, event_id=id)
-            db_app.cons_repo.del_customer(user_id=event.customer.id, event_id=id)
-            return jsonify({"ans": db_app.event_repo.del_event(id)})
+            application.cons_repo.del_curator(user_id=event.curator.id, event_id=id)
+            application.cons_repo.del_customer(user_id=event.customer.id, event_id=id)
+            return jsonify({"ans": application.event_repo.del_event(id)})
 

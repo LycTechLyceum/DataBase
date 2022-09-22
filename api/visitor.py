@@ -1,6 +1,6 @@
 from flask import jsonify
 from flask_restful import Resource, reqparse
-from app.app import db_app
+from app.app import application
 
 parser = reqparse.RequestParser()
 parser.add_argument("id_user", required=True)
@@ -16,13 +16,13 @@ class Visitor(Resource):
                 raise TypeError
         except TypeError:
             return jsonify({"ans": "id must be integer"})
-        user = db_app.user_repo.get_persona_by_id(id=id_user)
-        event = db_app.event_repo.get_event_by_id(id=id_event)
+        user = application.user_repo.get_persona_by_id(id=id_user)
+        event = application.event_repo.get_event_by_id(id=id_event)
         if user is None:
             return jsonify({"ans": "there is no user with id {}".format(id_user)})
         elif event is None:
             return jsonify({"ans": "there is no event with id {}".format(id_event)})
-        return jsonify({"ans": db_app.cons_repo.delete_visitor(user_id=id_user, event_id=id_event)})
+        return jsonify({"ans": application.cons_repo.delete_visitor(user_id=id_user, event_id=id_event)})
 
     def post(self):
         args = parser.parse_args()
@@ -32,10 +32,10 @@ class Visitor(Resource):
                 raise TypeError
         except TypeError:
             return jsonify({"ans": "id must be integer"})
-        user = db_app.user_repo.get_persona_by_id(id=id_user)
-        event = db_app.event_repo.get_event_by_id(id=id_event)
+        user = application.user_repo.get_persona_by_id(id=id_user)
+        event = application.event_repo.get_event_by_id(id=id_event)
         if user is None:
             return jsonify({"ans": "there is no user with id {}".format(id_user)})
         elif event is None:
             return jsonify({"ans": "there is no event with id {}".format(id_event)})
-        return jsonify({"ans": db_app.cons_repo.set_visitor(user=user, event=event)})
+        return jsonify({"ans": application.cons_repo.set_visitor(user=user, event=event)})

@@ -1,6 +1,6 @@
 from flask import jsonify
 from flask_restful import Resource, reqparse
-from app.app import db_app
+from app.app import application
 
 parser = reqparse.RequestParser()
 parser.add_argument("id", required=False)
@@ -21,12 +21,12 @@ class User(Resource):
                 raise TypeError
         except TypeError:
             return jsonify({"ans": "id must be integer"})
-        persona = db_app.user_repo.get_persona_by_id(id)
+        persona = application.user_repo.get_persona_by_id(id)
         if persona is None:
             return {"ans": "there is no user with id {}".format(id)}
         elif type(persona) == str:
             return {"ans": persona}
-        return {"ans": db_app.user_repo.delete_user(persona.id)}
+        return {"ans": application.user_repo.delete_user(persona.id)}
 
     def get(self):
         args = parser.parse_args()
@@ -36,7 +36,7 @@ class User(Resource):
                 raise TypeError
         except TypeError:
             return jsonify({"ans": "id must be integer"})
-        persona = db_app.user_repo.get_persona_by_id(id)
+        persona = application.user_repo.get_persona_by_id(id)
         if persona is None:
             return {"ans": "there is no user with id {}".format(id)}
         elif type(persona) == str:
@@ -63,13 +63,13 @@ class User(Resource):
         except TypeError:
             return jsonify({"ans": "id position must be integer"})
 
-        pos = db_app.cons_repo.get_pos_by_id(id_pos)
+        pos = application.cons_repo.get_pos_by_id(id_pos)
         if pos is None:
             return jsonify({"ans": "there is no position with id {}".format(id_pos)})
         elif type(pos) == str:
             return jsonify({"ans": pos})
 
-        add_user_callback = db_app.user_repo.add_user(
+        add_user_callback = application.user_repo.add_user(
             name=name,
             surname=surname,
             grade=grade,

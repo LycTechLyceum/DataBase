@@ -1,6 +1,6 @@
 from flask import jsonify
 from flask_restful import Resource, reqparse
-from app.app import db_app
+from app.app import application
 
 parser = reqparse.RequestParser()
 parser.add_argument("id_user", required=True)
@@ -15,8 +15,8 @@ def get_args():
             raise TypeError
     except TypeError:
         return jsonify({"ans": "id must be integer"})
-    user = db_app.user_repo.get_persona_by_id(id_user)
-    event = db_app.event_repo.get_event_by_id(id_event)
+    user = application.user_repo.get_persona_by_id(id_user)
+    event = application.event_repo.get_event_by_id(id_event)
     if user is None:
         return True, {"ans": "there is no user with id {}".format(id_user)}
     if event is None:
@@ -31,13 +31,13 @@ class Curator(Resource):
         if error:
             return jsonify(ans)
         user, event = ans["user"], ans["event"]
-        return jsonify({"ans": db_app.cons_repo.set_curator(user=user, event=event)})
+        return jsonify({"ans": application.cons_repo.set_curator(user=user, event=event)})
 
     def delete(self):
         error, ans = get_args()
         if error:
             return jsonify(ans)
         user, event = ans["user"], ans["event"]
-        return jsonify({"ans": db_app.cons_repo.del_curator(user_id=user.id, event_id=event.id)})
+        return jsonify({"ans": application.cons_repo.del_curator(user_id=user.id, event_id=event.id)})
 
 

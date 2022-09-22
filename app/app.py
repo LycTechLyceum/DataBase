@@ -19,9 +19,9 @@ class DbApp(Flask):
         self.api = Api(self)
 
 
-db_app = DbApp(__name__)
+application = DbApp(__name__)
 
 
-@db_app.errorhandler(404)
+@application.errorhandler(404)
 def not_found():
     return 'Ой! Что-то пошло не так. Скорее всего, такой страницы не существует :(', 404

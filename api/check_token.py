@@ -1,7 +1,7 @@
 from flask import jsonify
 from flask_restful import Resource, reqparse
 import hashlib
-from app.app import db_app
+from app.app import application
 
 parser = reqparse.RequestParser()
 parser.add_argument("login", required=True)
@@ -16,7 +16,7 @@ class CheckerToken(Resource):
         login = args["login"]
         hash_object = hashlib.md5(args["token"].encode())
         hashed_token = hash_object.hexdigest()
-        user = db_app.user_repo.get_persona_by_login(login)
+        user = application.user_repo.get_persona_by_login(login)
         if not user:
             return jsonify({"error": True, "ans": "there is no user with login {}".format(login)})
         elif user.position.id != 1:  # важный моммент, первой всегда должны быть долдность куратора

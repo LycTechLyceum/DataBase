@@ -35,6 +35,6 @@ def global_init(db_file):
     SqlAlchemyBase.metadata.create_all(engine)
 
 
-def create_session() -> Session: # создаем все объекты, которые еще не были созданы
+def create_session() -> Session:  # создаем все объекты, которые еще не были созданы
     global __factory
     return __factory()

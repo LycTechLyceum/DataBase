@@ -1,11 +1,11 @@
 from flask import jsonify
 from flask_restful import Resource
-from app.app import db_app
+from app.app import application
 
 
 class Visitors(Resource):
     def get(self):
-        all_visitors = db_app.cons_repo.get_all_visitors()
+        all_visitors = application.cons_repo.get_all_visitors()
         response = {}
         for visitor in all_visitors:
             if visitor.id_visitor not in response.keys():

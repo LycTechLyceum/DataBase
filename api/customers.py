@@ -1,11 +1,11 @@
 from flask import jsonify
 from flask_restful import Resource
-from app.app import db_app
+from app.app import application
 
 
 class Customers(Resource):
     def get(self):
-        all_customers = db_app.cons_repo.get_all_customers()
+        all_customers = application.cons_repo.get_all_customers()
         response = {}
         for customer in all_customers:
             if customer.personality.id not in response.keys():

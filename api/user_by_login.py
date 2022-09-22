@@ -1,6 +1,6 @@
 from flask import jsonify
 from flask_restful import Resource, reqparse
-from app.app import db_app
+from app.app import application
 
 parser = reqparse.RequestParser()
 parser.add_argument("login", required=True)
@@ -10,7 +10,7 @@ class UserData(Resource):
     def get(self):
         args = parser.parse_args()
         login = args["login"]
-        persona = db_app.user_repo.get_persona_by_login(login)
+        persona = application.user_repo.get_persona_by_login(login)
         if persona is None:
             return {"ans": "there is no user with login {}".format(login)}
         elif type(persona) == str:

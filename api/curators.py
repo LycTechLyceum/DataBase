@@ -1,11 +1,11 @@
 from flask import jsonify
 from flask_restful import Resource
-from app.app import db_app
+from app.app import application
 
 
 class Curators(Resource):
     def get(self):
-        all_curators = db_app.cons_repo.get_all_curators()
+        all_curators = application.cons_repo.get_all_curators()
         response = {}
         for curator in all_curators:
             if curator.personality.id not in response.keys():

@@ -1,6 +1,6 @@
 from flask import jsonify
 from flask_restful import Resource, reqparse
-from app.app import db_app
+from app.app import application
 
 
 parser = reqparse.RequestParser()
@@ -18,10 +18,10 @@ class Practice(Resource):
                 raise TypeError
         except TypeError:
             return jsonify({"ans": "id org must be integer"})
-        org = db_app.cons_repo.get_practice_by_id(id=id)
+        org = application.cons_repo.get_practice_by_id(id=id)
         if org is None:
             return jsonify({"ans": "there is no practice with id {}".format(id)})
-        return jsonify({"ans": db_app.cons_repo.delete_practice(id)})
+        return jsonify({"ans": application.cons_repo.delete_practice(id)})
 
     def post(self):
         args = parser.parse_args()
@@ -31,10 +31,10 @@ class Practice(Resource):
                 raise TypeError
         except TypeError:
             return jsonify({"ans": "id org must be integer"})
-        org = db_app.user_repo.get_persona_by_id(id=id_org)
+        org = application.user_repo.get_persona_by_id(id=id_org)
         if org is None:
             return jsonify({"ans": "there is no user with id {}".format(id_org)})
-        return jsonify({"ans": db_app.cons_repo.add_practice(practice_org=org, practice_name=name)})
+        return jsonify({"ans": application.cons_repo.add_practice(practice_org=org, practice_name=name)})
 
     def get(self):
         try:
@@ -44,7 +44,7 @@ class Practice(Resource):
                 raise TypeError
         except TypeError:
             return jsonify({"ans": "id practice must be integer"})
-        practice = db_app.cons_repo.get_practice_by_id(id_practice)
+        practice = application.cons_repo.get_practice_by_id(id_practice)
         if practice is None:
             return jsonify({"ans": "threr is no practice with id {}".format(id_practice)})
         elif type(practice) == str:

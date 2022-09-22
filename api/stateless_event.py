@@ -1,6 +1,6 @@
 from flask import jsonify
 from flask_restful import Resource, reqparse
-from app.app import db_app
+from app.app import application
 
 parser = reqparse.RequestParser()
 parser.add_argument("id_user", required=False)
@@ -21,7 +21,7 @@ def st_event_controller():
         return jsonify({"ans": "all id must be integers"})
     except Exception:
         return jsonify({"ans": "error, try to check all params"})
-    user = db_app.user_repo.get_persona_by_id(id=user_id)
+    user = application.user_repo.get_persona_by_id(id=user_id)
     if user is None:
         return True, {"ans": "there is no user with id {}".format(user_id)}
     return False, [title, description, contact, user_id]
@@ -36,16 +36,16 @@ class StatelessEvent(Resource):
             return jsonify({"ans": "all id must be integers"})
         except Exception:
             return jsonify({"ans": "error, try to check all params"})
-        st_event = db_app.cons_repo.get_st_event_by_id(st_event_id)
+        st_event = application.cons_repo.get_st_event_by_id(st_event_id)
         if st_event is None:
             jsonify({"ans": "there is no stateless event with id {}".format(st_event_id)})
-        return jsonify({"ans": db_app.cons_repo.delete_stateless_events(st_event_id)})
+        return jsonify({"ans": application.cons_repo.delete_stateless_events(st_event_id)})
 
     def post(self):
         error, ans = st_event_controller()
         if error:
             return jsonify(ans)
-        return jsonify({"ans": db_app.cons_repo.add_stateless_events(ans[0], ans[1], ans[2], ans[3])})
+        return jsonify({"ans": application.cons_repo.add_stateless_events(ans[0], ans[1], ans[2], ans[3])})
 
     def get(self):
         args = parser.parse_args()
@@ -53,7 +53,7 @@ class StatelessEvent(Resource):
             st_event_id = int(args["st_event_id"])
         except TypeError:
             return jsonify({"ans": "all id must be integers"})
-        st_event = db_app.cons_repo.get_st_event_by_id(st_event_id)
+        st_event = application.cons_repo.get_st_event_by_id(st_event_id)
         if st_event is None:
             return jsonify({"ans": "there is no stateless event with id {}".format(st_event_id)})
         return jsonify({"ans": {"title": st_event.title, "contact": st_event.contact,
@@ -67,7 +67,7 @@ class StatelessEvent(Resource):
 class StatelessEvents(Resource):
     def get(self):
         resp = []
-        st_events = db_app.cons_repo.get_all_st_events()
+        st_events = application.cons_repo.get_all_st_events()
         for st_event in st_events:
             resp.append({"title": st_event.title, "contact": st_event.contact,
                          "description": st_event.description,
