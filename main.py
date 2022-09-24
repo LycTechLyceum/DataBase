@@ -57,8 +57,12 @@ application.api.add_resource(StatelessEvent, "/api/stateless-event")
 application.api.add_resource(StatelessEvents, "/api/stateless-events")
 
 
+@application.route("/")
+def hello():
+    return "<h1 style='color:blue'>Hello There!</h1>"
+
 #  TODO: добавть delete всяких вещей
 
+
 if __name__ == '__main__':
-    port = int(os.environ.get("PORT", 5000))
-    application.run(host='0.0.0.0', port=port)
+    application.run(host='0.0.0.0')
